@@ -2,10 +2,10 @@ import {Link, useHistory} from "react-router-dom";
 
 import {useSelector} from "react-redux";
 
-import logoSmall from "../../../../assets/images/logo/logo-small.svg";
-import logoSmallDark from "../../../../assets/images/logo/logo-small-dark.svg";
-import logo from "../../../../assets/images/logo/logo.svg";
-import logoDark from "../../../../assets/images/logo/logo-dark.svg";
+import logoSmall from "../../../../assets/images/logo/logo.png";
+import logoSmallDark from "../../../../assets/images/logo/logo-light.png";
+import logo from "../../../../assets/images/logo/SPORTIFY.png";
+import logoDark from "../../../../assets/images/logo/SPORTIFY-light.png";
 import logoRTL from "../../../../assets/images/logo/logo-rtl.svg";
 import logoRTLDark from "../../../../assets/images/logo/logo-rtl-dark.svg";
 

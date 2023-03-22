@@ -107,7 +107,7 @@ export default function BalanceCard() {
             fontSize: "14px",
           },
           formatter: (value) => {
-            return value == '0' ? value / 1000 : value / 1000 + "K";
+            return value === '0' ? value / 1000 : value / 1000 + "K";
           },
         },
         min: 0,
