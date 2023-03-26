@@ -26,7 +26,7 @@ export default function SignUp({setToken}) {
     const dispatch = useDispatch()
 
     async function registerUser(credentials) {
-        return (await api.post("/v1/account/auth/register/", JSON.stringify(credentials))).data;
+        return (await api.post("/v1/accounts/auth/register/", JSON.stringify(credentials))).data;
     }
 
     const handleSubmit = async e => {
@@ -37,7 +37,7 @@ export default function SignUp({setToken}) {
         }).then(async res => {
             setToken(res)
             const refresh = localStorage.getItem("refresh")
-            const response = await api.post('/v1/account/auth/refresh/', {refresh: refresh});
+            const response = await api.post('/v1/accounts/auth/refresh/', {refresh: refresh});
             const data = response.data;
             localStorage.setItem("user", JSON.stringify(data.user))
             history.push("/home")

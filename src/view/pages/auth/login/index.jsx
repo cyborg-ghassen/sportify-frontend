@@ -21,7 +21,7 @@ export default function Login({setToken}) {
     const dispatch = useDispatch()
 
     async function loginUser(credentials) {
-        return (await api.post("/v1/account/auth/login/", JSON.stringify(credentials))).data;
+        return (await api.post("/v1/accounts/auth/login/", JSON.stringify(credentials))).data;
     }
 
     useEffect(() => {

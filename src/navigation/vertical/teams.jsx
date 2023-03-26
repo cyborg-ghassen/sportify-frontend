@@ -5,6 +5,8 @@ import IntlMessages from "../../layout/components/lang/IntlMessages";
 const teams = [
     {
         header: <IntlMessages id="sidebar-team" />,
+        group_name: [],
+        perm_name: [],
     },
 ];
 

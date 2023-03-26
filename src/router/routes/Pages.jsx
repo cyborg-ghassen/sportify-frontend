@@ -18,6 +18,20 @@ const PagesRoutes = [
         perm_name: [""],
     },
     {
+        path: "/user-create",
+        component: lazy(() => import("../../view/pages/account/users/addedit")),
+        layout: "VerticalLayout",
+        group_name: ["admin"],
+        perm_name: [""],
+    },
+    {
+        path: "/user-edit/:id",
+        component: lazy(() => import("../../view/pages/account/users/addedit")),
+        layout: "VerticalLayout",
+        group_name: ["admin"],
+        perm_name: [""],
+    },
+    {
         path: "/group",
         component: lazy(() => import("../../view/pages/account/groups/list")),
         layout: "VerticalLayout",

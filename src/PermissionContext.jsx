@@ -9,7 +9,7 @@ export const PermissionProvider = ({ children }) => {
 
     const refreshPermissions = async () => {
         const refresh = localStorage.getItem("refresh")
-        const response = await api.post('/v1/account/auth/refresh/', {refresh: refresh});
+        const response = await api.post('/v1/accounts/auth/refresh/', {refresh: refresh});
         const data = await response.data;
         setAuthToken(data.access)
         setPermissions(data.permissions_name);

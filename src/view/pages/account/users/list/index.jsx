@@ -1,12 +1,13 @@
 import React, {useEffect, useMemo, useRef, useState} from "react";
 
-import {Row, Col, Card, Button, Table, Space, Input, Popconfirm} from "antd";
+import {Row, Col, Card, Button, Table, Space, Input, Popconfirm, Tag} from "antd";
 import PageContent from "../../../../../layout/components/content/page-content";
 import reqwest from "reqwest";
 import {Link, useHistory, useLocation} from "react-router-dom";
 import {api} from "../../../../../utils/backend.instance";
 import Highlighter from "react-highlight-words";
 import PropTypes from "prop-types";
+
 function SearchOutlined(props) {
     return null;
 }
@@ -36,7 +37,7 @@ export default function Blank() {
     let query = useQuery();
 
     const getUsers = async () => {
-        return (await api.get(`/v1/account/user/`, {params: query})).data
+        return (await api.get(`/v1/accounts/user/`, {params: query})).data
     }
 
     const handleSearch = (selectedKeys, confirm, dataIndex) => {
@@ -44,7 +45,7 @@ export default function Blank() {
         setSearchText(selectedKeys[0]);
         setSearchedColumn(dataIndex);
         query.set(dataIndex, selectedKeys[0])
-        history.push({ search: query.toString() });
+        history.push({search: query.toString()});
         getUsers()
     };
 
@@ -59,9 +60,9 @@ export default function Blank() {
     }
 
     const handleDelete = async (id) => {
-        await api.delete(`/v1/account/user/${id}/`)
+        await api.delete(`/v1/accounts/user/${id}/`)
             .then(async () => {
-                const d = (await api.get(`/v1/account/user/?${query}`)).data
+                const d = (await api.get(`/v1/accounts/user/?${query}`)).data
                 setData(d.results)
             })
     }
@@ -159,26 +160,71 @@ export default function Blank() {
             ),
     });
 
+    let color;
     const columns = [
         {
             title: 'Name',
             dataIndex: 'name',
             sorter: true,
+            fixed: "left",
             render: name => name.first_name + ' ' + name.last_name,
-            width: '20%',
+        },
+        {
+            title: 'Username',
+            dataIndex: 'username',
+            sorter: true,
+            render: text => <Link to={`/user-edit/${text.id}`}>{text.username}</Link>
         },
         {
             title: 'Phone',
             dataIndex: 'phone',
-            width: '20%',
         },
         {
             title: 'Email',
             dataIndex: 'email',
+            width: "20%"
+        },
+        {
+            title: 'Main Sport',
+            dataIndex: 'main_sport',
+        },
+        {
+            title: 'Sports',
+            dataIndex: 'sports',
+            render: sports => sports.map((sport) => <p>{sport} </p>)
+        },
+        {
+            title: 'Groups',
+            dataIndex: 'group',
+            render: groups => groups.map((group) => <p>{group} </p>)
+        },
+        {
+            title: "Active",
+            key: "is_active",
+            dataIndex: "is_active",
+            filters: [
+                {
+                    text: 'Oui',
+                    value: 'True',
+                },
+                {
+                    text: 'Non',
+                    value: 'False',
+                },
+            ],
+            render: (tag) => (
+                color = tag === "oui" ? "green" : "red",
+                    <>
+                        <Tag className="hp-mb-md-8" color={color} key={tag}>
+                            {tag.toUpperCase()}
+                        </Tag>
+                    </>
+            ),
         },
         {
             title: "Action",
             key: "action",
+            fixed: "right",
             dataIndex: "action",
             render: (text) => (
                 <Space size="middle">
@@ -192,11 +238,11 @@ export default function Blank() {
                         title="Delete this entry"
                         description="Are you sure to delete this entry ?"
                         onConfirm={(e) => handleDelete(text)}
-                      >
+                    >
                         <Button type="primary" size="small"
-                            className="hp-bg-danger-1 hp-border-color-danger-1 hp-hover-bg-danger-2 hp-hover-border-color-danger-2"><i
-                        className="ri-delete-bin-6-fill"/></Button>
-                      </Popconfirm>
+                                className="hp-bg-danger-1 hp-border-color-danger-1 hp-hover-bg-danger-2 hp-hover-border-color-danger-2"><i
+                            className="ri-delete-bin-6-fill"/></Button>
+                    </Popconfirm>
 
                 </Space>
             ),
@@ -207,8 +253,13 @@ export default function Blank() {
         key: item.id,
         id: item.id,
         name: item,
+        username: item,
         phone: item.phone_number,
         email: item.email,
+        main_sport: item.main_sport,
+        sports: item.sports,
+        group: item.groups_name,
+        is_active: item.is_active ? "oui" : "non",
         action: item.id
     }))
 
@@ -276,16 +327,23 @@ export default function Blank() {
                             </Col>
 
                             <Col span={24}>
-                                <Table
-                                    rowSelection={rowSelection}
-                                    columns={columns}
-                                    rowKey={record => record.id}
-                                    dataSource={Data}
-                                    pagination={pagination}
-                                    loading={loading}
-                                    onChange={handleTableChange}
-                                    scroll={{x: 800}}
-                                />
+                                    <Table
+                                        title={() => <Link
+                                            to={"/user-create"}>
+                                            <Button type="primary"
+                                                    className="hp-bg-info-1 hp-border-color-info-1 hp-hover-bg-info-2 hp-hover-border-color-info-2">
+                                                Add
+                                            </Button>
+                                        </Link>}
+                                        rowSelection={rowSelection}
+                                        columns={columns}
+                                        rowKey={record => record.id}
+                                        dataSource={Data}
+                                        pagination={pagination}
+                                        loading={loading}
+                                        onChange={handleTableChange}
+                                        scroll={{x: 1300}}
+                                    />
                             </Col>
                         </Row>
                     </Card>
